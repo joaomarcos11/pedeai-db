@@ -1,0 +1,55 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Terraform Create Database
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  create_infra:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          
+      - name: Setup Terraform CLI
+        uses: hashicorp/setup-terraform@v3.1.2
+
+      - name: Terraform init, plan and apply
+        run: |
+          echo `pwd`
+          echo "tfpath ${{ github.event.inputs.tfpath }}"
+          echo "** Running Terraform Init**"
+          terraform init
+  
+          echo "** Running Terraform Validate**"
+          terraform validate
+  
+          echo "** Running Terraform Plan**"
+          terraform plan
+
+        working-directory: '.'
+
+          # echo "** Running Terraform Apply**"
+          # terraform apply -auto-approve
