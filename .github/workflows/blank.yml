@@ -48,8 +48,8 @@ jobs:
   
           echo "** Running Terraform Plan**"
           terraform plan
+          
+          echo "** Running Terraform Apply**"
+          terraform apply -auto-approve
 
-        working-directory: '.'
-
-          # echo "** Running Terraform Apply**"
-          # terraform apply -auto-approve
+          working-directory: '.'
