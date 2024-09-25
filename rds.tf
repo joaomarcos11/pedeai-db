@@ -90,7 +90,7 @@ resource "aws_db_instance" "rds-pg" {
   identifier = "fiap44-db"
   db_name = "pedeai"
   username = "pedeai"
-  password = "senha1ABC" # TODO: puxar da secrets?
+  password = "senha1ABC"
   publicly_accessible = true
   skip_final_snapshot = true
   
