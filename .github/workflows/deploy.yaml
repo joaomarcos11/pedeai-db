@@ -1,0 +1,37 @@
+name: Provision AWS RDS database
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
+jobs:                                            
+  release:                                       
+    name: Release                                
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout                                  
+        uses: actions/checkout@v4                       
+
+      - name: Configure AWS credentials                          
+        uses: aws-actions/configure-aws-credentials@v4         
+        with:                                                    
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}        
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+      
+      - name: Provision AWS RDS database
+        run: terraform apply -auto-approve
