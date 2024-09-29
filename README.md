@@ -1,16 +1,23 @@
 # pedeai-db
 
-Repository to provision an AWS RDS Postgres database onto an existing subnet/vpc using Terraform.
+Repository to provision AWS RDS database using Terraform.
 
-#### How to use
+### How to use
 
-With *terraform* and *aws CLI* installed.
+#### Github Actions
+
+- Configure the repository secrets.
+- Go to actions and manually run **Provision AWS RDS database** Github Action.
+
+#### Locally
+
+With **terraform** and **aws CLI** installed.
 
 Configure aws credentials:
 
 - edit `~/.aws/credentials` file
 
-To create RDS database:
+To create EKS cluster:
 
 - `terraform init` to initialize
 - `terraform plan` to plan deploy
