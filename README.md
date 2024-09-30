@@ -7,7 +7,7 @@ Repository to provision AWS RDS database using Terraform.
 #### Github Actions
 
 - Configure the repository secrets.
-- Go to actions and manually run **Provision AWS RDS database** Github Action.
+- PR to main branch or go to actions and manually run **Provision AWS RDS database** Github Action.
 
 #### Locally
 
