@@ -37,4 +37,4 @@ jobs:
         uses: hashicorp/setup-terraform@v3
       
       - name: Provision AWS RDS database
-        run: terraform apply -auto-approve
+        run: terraform init && terraform apply -auto-approve
