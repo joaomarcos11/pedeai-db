@@ -17,6 +17,8 @@ env:
   MONGODB_ATLAS_PUBLIC_KEY: ${{ secrets.MONGODB_ATLAS_PUBLIC_KEY }}
   MONGODB_ATLAS_PRIVATE_KEY: ${{ secrets.MONGODB_ATLAS_PRIVATE_KEY }}
   MONGODB_ATLAS_ORG_ID: ${{ secrets.MONGODB_ATLAS_ORG_ID }}
+  MONGODB_CONNECTION_STRING: ${{ secrets.AWS_MONGODB_CONNECTION_STRING }}
+  MONGODB_DATABASE: ${{ secrets.AWS_MONGODB_DATABASE }}
 
 jobs:                                            
   release:                                       
@@ -44,3 +46,5 @@ jobs:
           MONGODB_ATLAS_PUBLIC_KEY: ${{ env.MONGODB_ATLAS_PUBLIC_KEY }}
           MONGODB_ATLAS_PRIVATE_KEY: ${{ env.MONGODB_ATLAS_PRIVATE_KEY }}
           MONGODB_ATLAS_ORG_ID: ${{ env.MONGODB_ATLAS_ORG_ID }}
+          MONGODB_CONNECTION_STRING: ${{ env.MONGODB_CONNECTION_STRING }}
+          MONGODB_DATABASE: ${{ env.MONGODB_DATABASE }}
