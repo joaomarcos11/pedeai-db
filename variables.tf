@@ -12,3 +12,13 @@ variable "mongodb_atlas_org_id" {
   description = "MongoDB Atlas Organization ID"
   type        = string
 }
+
+variable "mongodb_connection_string" {
+  description = "MongoDB Connection String"
+  type        = string
+}
+
+variable "mongodb_database" {
+  description = "MongoDB Database Name"
+  type        = string
+}
