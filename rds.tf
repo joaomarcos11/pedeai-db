@@ -81,21 +81,47 @@ resource "aws_vpc_security_group_ingress_rule" "allow_node_group" {
   to_port           = 5432
 }
 
-resource "aws_db_instance" "rds-pg" {
+resource "aws_db_instance" "rds-pg-clientes" {
   engine = "postgres"
   engine_version = "16"
   allocated_storage = 20
   instance_class = "db.t3.micro"
   storage_type = "gp2"
-  identifier = "fiap44-db"
-  db_name = "pedeai"
+  identifier = "fiap44-db-clientes"
+  db_name = "pedeaiclientes"
   username = "pedeai"
   password = "senha1ABC"
   publicly_accessible = true
   skip_final_snapshot = true
   
   tags =  {
-      Name = "fiap44-db"
+    Name = "fiap44-db-clientes"
+  }
+
+  # Assign this instance to a specific VPC
+  db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
+
+  # Assign group with the correct inbound rules
+  vpc_security_group_ids = [aws_security_group.allow_node_group.id]
+
+  depends_on = [aws_security_group.allow_node_group, aws_db_subnet_group.db_subnet_group]
+}
+
+resource "aws_db_instance" "rds-pg-pedidos" {
+  engine = "postgres"
+  engine_version = "16"
+  allocated_storage = 20
+  instance_class = "db.t3.micro"
+  storage_type = "gp2"
+  identifier = "fiap44-db-pedidos"
+  db_name = "pedeaipedidos"
+  username = "pedeai"
+  password = "senha1ABC"
+  publicly_accessible = true
+  skip_final_snapshot = true
+  
+  tags =  {
+    Name = "fiap44-db-pedidos"
   }
 
   # Assign this instance to a specific VPC
