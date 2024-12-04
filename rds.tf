@@ -2,19 +2,6 @@ provider "aws" {
     region = "us-east-1"
 }
 
-provider "mongodbatlas" {
-  public_key  = var.mongodb_atlas_public_key
-  private_key = var.mongodb_atlas_private_key
-}
-
-provider "random" {
-  version = ">= 3.1.0"
-}
-
-provider "null" {
-  version = ">= 3.1.0"
-}
-
 data "aws_subnets" "db_subnets" {
   filter {
     name = "tag:Name"
@@ -144,58 +131,4 @@ resource "aws_db_instance" "rds-pg-pedidos" {
   vpc_security_group_ids = [aws_security_group.allow_node_group.id]
 
   depends_on = [aws_security_group.allow_node_group, aws_db_subnet_group.db_subnet_group]
-}
-
-# MongoDB Atlas setup
-resource "mongodbatlas_project" "project" {
-  name   = "my-mongodb-project"
-  org_id = var.mongodb_atlas_org_id
-}
-
-resource "mongodbatlas_cluster" "cluster" {
-  project_id   = mongodbatlas_project.project.id
-  name         = "my-cluster"
-  provider_name = "AWS"
-  provider_region_name = "US_EAST_1"
-  provider_instance_size_name = "M10"
-  provider_backup_enabled = true
-}
-
-resource "random_password" "db_password" {
-  length  = 16
-  special = false
-}
-
-resource "mongodbatlas_database_user" "db_user" {
-  project_id    = mongodbatlas_project.project.id
-  username      = "dbUser"
-  password      = random_password.db_password.result
-  roles {
-    role_name     = "readWrite"
-    database_name = "admin"
-  }
-}
-
-resource "aws_ssm_parameter" "db_password" {
-  name  = "/mongodb/db_password"
-  type  = "SecureString"
-  value = random_password.db_password.result
-}
-
-resource "aws_ssm_parameter" "db_username" {
-  name  = "/mongodb/db_username"
-  type  = "String"
-  value = mongodbatlas_database_user.db_user.username
-}
-
-output "cluster_connection_string" {
-  value = mongodbatlas_cluster.cluster.connection_strings.standard_srv
-}
-
-output "db_username" {
-  value = mongodbatlas_database_user.db_user.username
-}
-
-output "db_password" {
-  value = random_password.db_password.result
 }
