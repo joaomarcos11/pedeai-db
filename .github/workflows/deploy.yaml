@@ -1,4 +1,4 @@
-name: Provision AWS RDS and MongoDB
+name: Provision AWS RDS database
 
 on:
   pull_request:
@@ -13,12 +13,6 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
-  #Mongo
-  MONGODB_ATLAS_PUBLIC_KEY: ${{ secrets.MONGODB_ATLAS_PUBLIC_KEY }}
-  MONGODB_ATLAS_PRIVATE_KEY: ${{ secrets.MONGODB_ATLAS_PRIVATE_KEY }}
-  MONGODB_ATLAS_ORG_ID: ${{ secrets.MONGODB_ATLAS_ORG_ID }}
-  MONGODB_CONNECTION_STRING: ${{ secrets.AWS_MONGODB_CONNECTION_STRING }}
-  MONGODB_DATABASE: ${{ secrets.AWS_MONGODB_DATABASE }}
 
 jobs:                                            
   release:                                       
@@ -40,11 +34,5 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       
-      - name: Provision AWS RDS and MongoDB
+      - name: Provision AWS RDS database
         run: terraform init && terraform apply -auto-approve
-        env:
-          MONGODB_ATLAS_PUBLIC_KEY: ${{ env.MONGODB_ATLAS_PUBLIC_KEY }}
-          MONGODB_ATLAS_PRIVATE_KEY: ${{ env.MONGODB_ATLAS_PRIVATE_KEY }}
-          MONGODB_ATLAS_ORG_ID: ${{ env.MONGODB_ATLAS_ORG_ID }}
-          MONGODB_CONNECTION_STRING: ${{ env.MONGODB_CONNECTION_STRING }}
-          MONGODB_DATABASE: ${{ env.MONGODB_DATABASE }}
